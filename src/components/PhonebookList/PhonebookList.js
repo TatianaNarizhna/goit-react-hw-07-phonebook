@@ -1,20 +1,25 @@
 import React from "react";
+import { useEffect } from 'react';
 // import { connect } from 'react-redux';
 import { useSelector, useDispatch } from 'react-redux';
-import  deleteItem  from '../../redux/actions';
+import  contactsOperations  from '../../redux/contacts-operations';
 import PhoneBookItem from "../PhonebookItem/PhoneBookItem";
-import { getVisibleContacts } from "../../redux/contacts-selector";
+import { getVisibleContacts, getLoading } from "../../redux/contacts-selector";
 // import PropTypes from "prop-types";
 
 const PhonebookList = ({ title }) => {
   const contacts = useSelector(getVisibleContacts);
+  const loading = useSelector(getLoading);
   const dispatch = useDispatch();
 
-  const onDeleteList = id => dispatch(deleteItem.deleteItem(id));
+  useEffect(() => dispatch(contactsOperations.fetchContacts()), [dispatch]);
+
+  const onDeleteList = id => dispatch(contactsOperations.deleteItem(id));
 
   return (
     <div>
       <h2>{title}</h2>
+      
       <ul>
         {contacts.map(({ id, name, number }) => (
           <PhoneBookItem
@@ -25,21 +30,15 @@ const PhonebookList = ({ title }) => {
           />
         ))}
       </ul>
+      {loading && <h1>Loading...</h1>}
     </div>
   );
 };
 
-
+  
 export default PhonebookList;
 
-// ***
-// const getVisibleContacts = (contacts, filter) => {
-//   const normalizedFilter = filter.toLowerCase();
 
-//   return contacts.filter((contact) =>
-//     contact.name.toLowerCase().includes(normalizedFilter)
-//   );
-// };
 
 // const mapStateToProps = (state) => {
 //  const { filter, items } = state.contacts;

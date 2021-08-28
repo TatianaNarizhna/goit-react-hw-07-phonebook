@@ -7,9 +7,12 @@ const PhoneListItem = ({ id, name, number, onDeleteList }) => {
     <li className={s.list} key={id}>
       <p>{name}:</p>
       <p>{number}</p>
+      <div className={s.buttonList}>
       <button className={s.button} onClick={() => onDeleteList(id)}>
         Delete
       </button>
+      </div>
+    
     </li>
   );
 };
